@@ -169,6 +169,9 @@
                     var dataurl = 'data:image/svg+xml;base64,' + window.btoa(qrcode.svg());
                     
                 } else {
+                    if(qrmime == 'image/jpeg'){
+                        qrbgalpha = 1;
+                    }
                     var config = {
                         size: qrsize,
                         mime: qrmime,
