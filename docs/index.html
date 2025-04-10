@@ -166,7 +166,6 @@
                         background: qrbgcolor,
                         padding: 0,
                     }
-                    console.log(config);
                     var qrcode = new QRCode(config);
                     var dataurl = 'data:image/svg+xml;base64,' + window.btoa(qrcode.svg());
                     
@@ -179,7 +178,6 @@
                         foreground: qrforground,
                         value: qrtext
                     };
-                    console.log(config);
                     var qrcode = new QRious(config);
                     var dataurl = qrcode.toDataURL(qrmime);
                 }
