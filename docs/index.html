@@ -178,7 +178,8 @@
                         backgroundAlpha: qrbgalpha,
                         background: qrbgcolor,
                         foreground: qrforground,
-                        value: qrtext
+                        value: qrtext,
+                        join: true,
                     };
                     var qrcode = new QRious(config);
                     var dataurl = qrcode.toDataURL(qrmime);
