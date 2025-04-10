@@ -22,6 +22,12 @@
             img[src=""] {
                 display: none;
             }
+            #qr-text:placeholder-shown {
+                box-shadow: 0 0 0 0 blue;
+                animation: blink 1s;
+                animation-iteration-count: 3;
+            }
+            @keyframes blink { 50% { box-shadow: 0 0 0 0.25rem rgba(0, 0, 255, .25); }  }
         </style>
     </head>
 
