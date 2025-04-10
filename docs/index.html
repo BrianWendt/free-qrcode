@@ -188,6 +188,20 @@
 
                 return false;
             }
+
+            /**
+             * Record inputs in local storage so they persist across page loads.
+             */
+            const inputs = document.querySelectorAll("input, select");
+            inputs.forEach(function(input) {
+                input.addEventListener("change", function() {
+                    localStorage.setItem(input.id, input.value);
+                });
+                const storedValue = localStorage.getItem(input.id);
+                if (storedValue) {
+                    input.value = storedValue;
+                }
+            });
         </script>
     </body>
 </html>
