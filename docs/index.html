@@ -108,8 +108,6 @@
                 </div>
             </form>
 
-            <p class>* Background Alpha does not work for SVGs.</p>
-
             <hr>
 
             <div class="card">
@@ -158,12 +156,13 @@
                 var qrforground = document.getElementById("qr-fg-color").value;
 
                 if(qrmime == 'image/svg'){
+                    var qrbgalphahex = Math.round(qrbgalpha * 255).toString(16).padStart(2, '0');
                     var config = {
                         content: qrtext,
                         width: qrsize,
                         height: qrsize,
                         color: qrforground,
-                        background: qrbgcolor,
+                        background: qrbgcolor + qrbgalphahex,
                         padding: 0,
                     }
                     var qrcode = new QRCode(config);
