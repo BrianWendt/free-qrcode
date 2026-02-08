@@ -15,8 +15,11 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script
-            src="https://cdn.jsdelivr.net/npm/qrcode-svg@1.0.0/dist/qrcode.min.js"
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            src="https://cdn.jsdelivr.net/npm/qrcode-svg@1.1.0/lib/qrcode.min.js"
+            integrity="sha384-gNIkPf9ZMqrJBuTVtU+YFVoOdxUv+q02WB9S3gls9p33OHdBaXA0fFBe/Vvntoo6"
+            crossorigin="anonymous"></script>
+
+        <script src="app.js" defer></script>
 
         <style>
             img[src=""] {
@@ -37,7 +40,7 @@
                 <img id="qr-img" class="img-fluid" src alt />
             </div>
 
-            <form onsubmit="return generate(event)">
+            <form id="qrcode-form" onsubmit="return generate(event)">
                 <div class="form-group my-3">
 
                     <div class="input-group input-group-lg">
@@ -63,7 +66,8 @@
                             <label for="qr-mime">File Type</label>
                             <select class="form-control" id="qr-mime">
                                 <option value="image/png">PNG</option>
-                                <option value="image/jpeg">JPEG</option>
+                                <option value="image/jpeg">JPEG (no
+                                    transparency)</option>
                                 <option value="image/webp">WEBP</option>
                                 <option value="image/svg">SVG (Vector)</option>
                                 <option value="image/gif">GIF</option>
@@ -85,7 +89,8 @@
 
                     <div class="col-md-4">
                         <div class="form-group my-3" id="bg-alpha">
-                            <label for="qr-bg-alpha">Background Alpha (opacity)</label><br />
+                            <label for="qr-bg-alpha">Background Alpha
+                                (opacity)</label><br />
                             <input type="range" class="form-control-range"
                                 id="qr-bg-alpha" min="0" max="1" step="0.01"
                                 value="1">
@@ -118,14 +123,14 @@
                     <p>This 3D barcode generator is powered by <a
                             href="https://github.com/neocotic/qrious"
                             target="_blank">https://github.com/neocotic/qrious</a>
-                        (rasters)
-                        and <a href="https://github.com/papnkukn/qrcode-svg"
+                        (rasters) and <a
+                            href="https://github.com/papnkukn/qrcode-svg"
                             target="_blank">https://github.com/papnkukn/qrcode-svg</a>
                         (svg)</p>
 
                     <p>This tool was built by <a
-                            href="https://github.com/BrianWendt" target="_blank">Brian
-                            Wendt</a>.</p>
+                            href="https://github.com/BrianWendt"
+                            target="_blank">Brian Wendt</a>.</p>
 
                     <p>The word “QR Code” is registered trademark of DENSO WAVE
                         INCORPORATED in Japan and other countries.</p>
@@ -136,73 +141,5 @@
                     href="https://github.com/BrianWendt/free-qrcode/issues"
                     target="_blank">here</a>.</p>
         </div>
-
-        <script>
-            /**
-             * This isn't elegant, but it works. This tool is just supposed to do the thing, not impress anyone.
-            */
-            const qrimg = document.getElementById("qr-img");
-
-            function generate(e){
-                e.preventDefault();
-                window.scrollTo(0, 0);
-                qrimg.setAttribute("src", "");
-
-                var qrtext = document.getElementById("qr-text").value;
-                var qrsize = parseInt(document.getElementById("qr-size").value);
-                var qrmime = document.getElementById("qr-mime").value;
-                var qrbgalpha = parseFloat(document.getElementById("qr-bg-alpha").value);
-                var qrbgcolor = document.getElementById("qr-bg-color").value;
-                var qrforground = document.getElementById("qr-fg-color").value;
-
-                if(qrmime == 'image/svg'){
-                    var qrbgalphahex = Math.round(qrbgalpha * 255).toString(16).padStart(2, '0');
-                    var config = {
-                        content: qrtext,
-                        width: qrsize,
-                        height: qrsize,
-                        color: qrforground,
-                        background: qrbgcolor + qrbgalphahex,
-                        padding: 0,
-                    }
-                    var qrcode = new QRCode(config);
-                    var dataurl = 'data:image/svg+xml;base64,' + window.btoa(qrcode.svg());
-                    
-                } else {
-                    if(qrmime == 'image/jpeg'){
-                        qrbgalpha = 1;
-                    }
-                    var config = {
-                        size: qrsize,
-                        mime: qrmime,
-                        backgroundAlpha: qrbgalpha,
-                        background: qrbgcolor,
-                        foreground: qrforground,
-                        value: qrtext,
-                        join: true,
-                    };
-                    var qrcode = new QRious(config);
-                    var dataurl = qrcode.toDataURL(qrmime);
-                }
-
-                qrimg.setAttribute("src", dataurl);
-
-                return false;
-            }
-
-            /**
-             * Record inputs in local storage so they persist across page loads.
-             */
-            const inputs = document.querySelectorAll("input, select");
-            inputs.forEach(function(input) {
-                input.addEventListener("change", function() {
-                    localStorage.setItem(input.id, input.value);
-                });
-                const storedValue = localStorage.getItem(input.id);
-                if (storedValue) {
-                    input.value = storedValue;
-                }
-            });
-        </script>
     </body>
 </html>
